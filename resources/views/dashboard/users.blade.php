@@ -12,6 +12,70 @@
     <link rel="stylesheet" href="{{ asset('/') }}plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 @endpush
 
+@section('buttonHeader')
+<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#modal-create">
+    <i class="fas fa-plus"></i> Create User
+</button>
+
+<div class="modal fade" id="modal-create">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Create - User</h4>
+            </div>
+            <form action="{{ route('users.store') }}" id="quickForm" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" name="name" class="form-control" placeholder="Nama Pengguna" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="text" name="email" class="form-control" placeholder="Email Pengguna" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="text" name="password" class="form-control" placeholder="Password Pengguna" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Role :</label>
+                            <select class="form-control select2bs4" name="role" style="width: 100%;">
+                                <option value="admin">
+                                    Admin
+                                </option>
+                                <option value="approval">
+                                    Approval
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endsection
+
 @section('content')
     <div class="card">
         <div class="card-body">
@@ -30,7 +94,7 @@
                 <tbody>
                     @foreach ($datas as $data)
                         <tr>
-                            <td>{{ $data->name }}</td>
+                            <td>{{ $loop->index+1}}</td>
                             <td>{{ $data->name }}</td>
                             <td>{{ $data->email }}</td>
                             <td>
@@ -43,8 +107,7 @@
                             <td>{{ date_format($data->updated_at, 'd M Y H:i:s') }}</td>
                             <td>{{ date_format($data->created_at, 'd M Y H:i:s') }}</td>
                             <td>
-                                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
-                                    data-target="#modal-{{ $data->id }}">
+                                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-{{ $data->id }}">
                                     <i class="fas fa-edit"></i> Edit
                                 </button>
 
@@ -52,7 +115,7 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h4 class="modal-title">Edit - User</h4>
+                                                <h4 class="modal-title">Edit - {{{ $data->name }}}</h4>
                                             </div>
                                             <form action="{{ route('users.update', $data->id) }}" id="quickForm" method="POST">
                                                 @csrf
@@ -63,8 +126,7 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label>Name</label>
-                                                                <input type="text" name="name" class="form-control"
-                                                                    placeholder="Nama Pengguna" value={{ $data->name }}>
+                                                                <input type="text" name="name" class="form-control" placeholder="Nama Pengguna" value={{ $data->name }}>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -72,16 +134,14 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label>Email</label>
-                                                                <input type="text" name="email" class="form-control"
-                                                                    placeholder="Email Pengguna" value={{ $data->email }}>
+                                                                <input type="text" name="email" class="form-control" placeholder="Email Pengguna" value={{ $data->email }}>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <label>Role :</label>
-                                                            <select class="form-control select2bs4" name="role"
-                                                                style="width: 100%;">
+                                                            <select class="form-control select2bs4" name="role" style="width: 100%;">
                                                                 <option value="admin"
                                                                     {{ $data->role === 'admin' ? 'selected' : '' }}> Admin
                                                                 </option>
@@ -93,8 +153,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer justify-content-between">
-                                                    <button type="button" class="btn btn-default"
-                                                        data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                     <button type="submit" class="btn btn-primary">Save</button>
                                                 </div>
                                             </form>
@@ -102,8 +161,7 @@
                                     </div>
                                 </div>
 
-                                <button type="button" class="btn btn-sm btn-danger btn-delete"
-                                    data-id={{ $data->id }}>
+                                <button type="button" class="btn btn-sm btn-danger btn-delete" data-id={{ $data->id }}>
                                     <i class="fas fa-trash"></i> Delete
                                 </button>
                             </td>
@@ -165,6 +223,9 @@
                     role: {
                         required: true,
                     },
+                    password: {
+                        required: true,
+                    },
                 },
                 messages: {
                     name: {
@@ -174,6 +235,9 @@
                         required: "Tidak Boleh Kosong",
                     },
                     role: {
+                        required: "Tidak Boleh Kosong",
+                    },
+                    password: {
                         required: "Tidak Boleh Kosong",
                     },
                 },
