@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,11 +34,12 @@ All Admin Routes List
 ----------------------------------------------------------------------------------------*/
 Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin', [DashboardController::class, 'index'])->name('admin.home');
+    Route::resource('admin/users', UsersController::class);
 });
 
 
 /*--------------------------------------------------------------------------------------
-All Admin Routes List
+All Approval Routes List
 ----------------------------------------------------------------------------------------*/
 Route::middleware(['auth', 'user-access:approval'])->group(function () {
     Route::get('/approval', [DashboardController::class, 'approvalHome'])->name('approval.home');

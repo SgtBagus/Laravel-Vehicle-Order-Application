@@ -1,5 +1,5 @@
 <a href="index3.html" class="brand-link">
-    <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <img src="{{ asset('/') }}dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
     <span class="brand-text font-weight-light">AdminLTE 3</span>
 </a>
 
@@ -23,14 +23,18 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href={{ url('/approve-list') }} class="nav-link">
+                @if (Auth::user()->role == 'admin')
+                    <a href={{ url('/admin/approve-list') }} class="nav-link">
+                @else
+                    <a href={{ url('/approval/approve-list') }} class="nav-link">
+                @endif
                     <i class="fas fa-table nav-icon"></i>
                     <p>Tabel Pengajuan</p>
                 </a>
             </li>
             @if (Auth::user()->role == 'admin')
                 <li class="nav-item">
-                    <a href={{ url('/users') }} class="nav-link">
+                    <a href={{ url('/admin/users') }} class="nav-link">
                         <i class="fas fa-user nav-icon"></i>
                         <p>Pengguna</p>
                     </a>
