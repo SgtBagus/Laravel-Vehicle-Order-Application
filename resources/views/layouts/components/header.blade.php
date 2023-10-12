@@ -19,7 +19,13 @@
             @guest
             @else
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="cursor: default">{{ Auth::user()->name }}</a>
+                    @if (Auth::user()->role == 'admin')
+                        <a href={{ url('/admin') }} class="nav-link" style="cursor: default">
+                    @else
+                        <a href={{ url('/approval') }} class="nav-link" style="cursor: default">
+                    @endif
+                        {{ Auth::user()->name }}
+                    </a>
                 </li>
 
                 <li class="nav-item">
