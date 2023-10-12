@@ -15,11 +15,8 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
-
 Auth::routes();
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
 
 // /*--------------------------------------------------------------------------------------
