@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use DB;
+
 use App\Models\User;
 use Illuminate\View\View;
 
@@ -12,7 +15,7 @@ class UsersController extends Controller {
     public function index(): View {
         $params = [
             "titlePages"    => 'User List',
-            "datas"         => User::latest()->paginate(5),
+            "datas"         => DB::table('users')->get(),
         ];
 
         return view('dashboard.users', $params);

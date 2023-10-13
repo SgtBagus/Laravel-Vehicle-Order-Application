@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use DB;
+use Auth;
 
 use App\Models\SubmissionList;
+use Illuminate\View\View;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Hash;
 
-class HomeController extends Controller {
-    public function index() {
+class SubmissionListController extends Controller {
+    public function index(): View {
         $datas =  DB::table('submission_lists as a')
         ->select(
             'a.id as id',
@@ -31,34 +35,28 @@ class HomeController extends Controller {
         ->get();
 
         $params = [
-            "titlePages"    => 'Pengajuan Kendarran',
-            "cars"          => DB::table('vehicle_lists')->get(),
+            "titlePages"    => 'Submission List',
             "datas"         => $datas,
         ];
 
-        return view('index', $params);
+        return view('dashboard.submissionList', $params);
     }
     
-    public function store(Request $request) {
-        $dateArray = explode(" ", $request->rangeDate);
+    public function update(Request $request, $id) {
+        $submissionList = SubmissionList::findOrFail($id);
 
-        SubmissionList::create([
-            'submission_name'   => $request->submission_name,
-            'vehicle_id'        => $request->vehicle_id,
-            'reason'            => $request->reason,
-            'note'              => $request->note,
-            'status'            => 'waiting',
-            'start_date'        => date_format(date_create($dateArray[0]), 'Y-m-d'),
-            'end_date'          => date_format(date_create($dateArray[2]), 'Y-m-d'),
-            'created_at'        => date('Y-m-d H:i:s'),
-            'updated_at'        => date('Y-m-d H:i:s'),
+        $submissionList->update([
+            'note'          => $request->note,
+            'status'        => $request->status,
+            'approve_by'    => Auth::user()->id,
+            'updated_at'    => date('Y-m-d H:i:s'),
         ]);
 
         return redirect()->back();
     }
 
     public function destroy(Request $request) {
-        User::find($request->id)->delete();
+        SubmissionList::find($request->id)->delete();
         return response()->json(array('success' => true));
     }
 }

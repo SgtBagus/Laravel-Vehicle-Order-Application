@@ -12,70 +12,6 @@
     <link rel="stylesheet" href="{{ asset('/') }}plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 @endpush
 
-@section('buttonHeader')
-<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#modal-create">
-    <i class="fas fa-plus"></i> Create User
-</button>
-
-<div class="modal fade" id="modal-create">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Create - User</h4>
-            </div>
-            <form action="{{ route('users.store') }}" id="quickForm" method="POST" enctype="multipart/form-data">
-                @csrf
-
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" name="name" class="form-control" placeholder="Nama Pengguna" value="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input type="text" name="email" class="form-control" placeholder="Email Pengguna" value="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Password</label>
-                                <input type="text" name="password" class="form-control" placeholder="Password Pengguna" value="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label>Role :</label>
-                            <select class="form-control select2bs4" name="role" style="width: 100%;">
-                                <option value="admin">
-                                    Admin
-                                </option>
-                                <option value="approval">
-                                    Approval
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-@endsection
-
 @section('content')
     <div class="card">
         <div class="card-body">
@@ -83,11 +19,15 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Created at</th>
-                        <th>Updated at</th>
+                        <th>Nama Pengaju</th>
+                        <th>Alasan</th>
+                        <th>Nama Kendaraan</th>
+                        <th>Status</th>
+                        <th>Catatan</th>
+                        <th>Tanggal Mulai</th>
+                        <th>Tanggal Selesai</th>
+                        <th>Dibuat pada tanggal</th>
+                        <th>Diupdate pada tanggal</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -96,28 +36,42 @@
                         <tr>
                             <td>{{ $loop->index+1}}</td>
                             <td>{{ $data->name }}</td>
-                            <td>{{ $data->email }}</td>
+                            <td>{{ $data->reason }}</td>
                             <td>
-                                @if ($data->role == 'admin')
-                                    Admin
+                                {{ $data->name_vechile }} - {{ $data->number_vechile }} - <b>Sisa Bahan Bakar {{ $data->fuel_vechile }} % </b>
+                            </td>
+                            <td>
+                                @if ($data->status == 'waiting')
+                                    <span class="badge badge-warning">Menunggu</span>
+                                @elseif ($data->status == 'approval')
+                                    <span class="badge badge-primary">Diterima</span>
                                 @else
-                                    Approval
+                                    <span class="badge badge-danger">Ditolak</span>
                                 @endif
                             </td>
+                            <td>{{ $data->note }}</td>
+                            <td>{{ date_format(date_create($data->start_date), 'd M Y') }}</td>
+                            <td>{{ date_format(date_create($data->end_date), 'd M Y') }}</td>
                             <td>{{ date_format(date_create($data->created_at), 'd M Y H:i:s') }}</td>
                             <td>{{ date_format(date_create($data->updated_at), 'd M Y H:i:s') }}</td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-{{ $data->id }}">
-                                    <i class="fas fa-edit"></i> Edit
+                                    <i class="fas fa-edit"></i>
                                 </button>
 
                                 <div class="modal fade" id="modal-{{ $data->id }}">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h4 class="modal-title">Edit - {{{ $data->name }}}</h4>
+                                                <h4 class="modal-title">Pengajuan - {{{ $data->name }}}</h4>
                                             </div>
-                                            <form action="{{ route('users.update', $data->id) }}" id="quickForm" method="POST">
+
+                                            @if (Auth::user()->role == 'admin')
+                                                <form action="{{ route('submission-list.update', $data->id) }}" id="quickForm" method="POST">
+                                            @else
+                                                <form action="{{ route('submission-list-approval.update', $data->id) }}" id="quickForm" method="POST">
+                                            @endif
+
                                                 @csrf
                                                 @method('PUT')
 
@@ -125,30 +79,27 @@
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <label>Name</label>
-                                                                <input type="text" name="name" class="form-control" placeholder="Nama Pengguna" value={{ $data->name }}>
+                                                                <label>Catatan</label>
+                                                                <textarea class="form-control" name="note" rows="5" placeholder="Catatan ...">{{ $data->note }}</textarea>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <label>Email</label>
-                                                                <input type="text" name="email" class="form-control" placeholder="Email Pengguna" value={{ $data->email }}>
+                                                                <label>Status :</label>
+                                                                <select class="form-control select2bs4" name="status" style="width: 100%;">
+                                                                    <option value="waiting" {{ $data->status === 'waiting' ? 'selected' : '' }}>
+                                                                        Menunggu
+                                                                    </option>
+                                                                    <option value="approval" {{ $data->status === 'approval' ? 'selected' : '' }}>
+                                                                        Di setujui
+                                                                    </option>
+                                                                    <option value="rejected" {{ $data->status === 'rejected' ? 'selected' : '' }}>
+                                                                        Di tolak
+                                                                    </option>
+                                                                </select>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <label>Role :</label>
-                                                            <select class="form-control select2bs4" name="role" style="width: 100%;">
-                                                                <option value="admin"
-                                                                    {{ $data->role === 'admin' ? 'selected' : '' }}> Admin
-                                                                </option>
-                                                                <option value="approval"
-                                                                    {{ $data->role === 'approval' ? 'selected' : '' }}> Approval
-                                                                </option>
-                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -161,9 +112,12 @@
                                     </div>
                                 </div>
 
-                                <button type="button" class="btn btn-sm btn-danger btn-delete" data-id={{ $data->id }}>
-                                    <i class="fas fa-trash"></i> Delete
-                                </button>
+                                @if (Auth::user()->role == 'admin')
+                                    <button type="button" class="btn btn-sm btn-danger btn-delete" data-id={{ $data->id }}>
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                @else
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -264,11 +218,11 @@
                     confirmButtonText: 'Iya'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        var id = $(this).attr('data-id');
+                        var id = $(this).attr('data-id'); 
 
                         $.ajax({
                             type: 'DELETE',
-                            url: "{{ url('/admin/users/delete/') }}" + id,
+                            url: "{{ url('/admin/submission-list/delete/') }}" + id,
                             dataType: 'JSON',
                             data: {
                                 'id': id,

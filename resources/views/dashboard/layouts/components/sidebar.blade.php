@@ -24,9 +24,9 @@
             </li>
             <li class="nav-item">
                 @if (Auth::user()->role == 'admin')
-                    <a href={{ url('/admin/approve-list') }} class="nav-link">
+                    <a href={{ url('/admin/submission-list') }} class="nav-link">
                 @else
-                    <a href={{ url('/approval/approve-list') }} class="nav-link">
+                    <a href={{ url('/approval/submission-list-approval') }} class="nav-link">
                 @endif
                     <i class="fas fa-table nav-icon"></i>
                     <p>Tabel Pengajuan</p>
