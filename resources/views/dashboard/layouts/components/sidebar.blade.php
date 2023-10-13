@@ -34,6 +34,12 @@
             </li>
             @if (Auth::user()->role == 'admin')
                 <li class="nav-item">
+                    <a href={{ url('/admin/vehicle') }} class="nav-link">
+                        <i class="fas fa-car nav-icon"></i>
+                        <p>List Kendaraan</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href={{ url('/admin/users') }} class="nav-link">
                         <i class="fas fa-user nav-icon"></i>
                         <p>Pengguna</p>

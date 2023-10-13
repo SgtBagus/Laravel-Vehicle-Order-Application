@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\VehicleController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +37,7 @@ All Admin Routes List
 Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin', [DashboardController::class, 'index'])->name('admin.home');
     Route::resource('admin/users', UsersController::class);
+    Route::resource('admin/vehicle', VehicleController::class);
 });
 
 
