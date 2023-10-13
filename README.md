@@ -1,66 +1,95 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+```markdown
+# Panduan Instalasi Laravel untuk Aplikasi Pemesanan Kendaraan
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Panduan ini akan membantu Anda menginstal dan menjalankan proyek Laravel "Aplikasi Pemesanan Kendaraan" dengan langkah-langkah yang jelas dan mudah diikuti.
 
-## About Laravel
+## Prasyarat
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Pastikan Anda telah memenuhi prasyarat berikut sebelum memulai:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [XAMPP](https://www.apachefriends.org/index.html) atau stack server sejenis yang sudah terinstal.
+- [PHP](https://www.php.net/): Pastikan Anda memiliki PHP versi 8.1.17 atau yang lebih baru.
+- [Composer](https://getcomposer.org/): Sebuah alat manajemen paket PHP.
+- [Node.js](https://nodejs.org/): Untuk manajemen paket JavaScript.
+- [npm](https://www.npmjs.com/): Alat manajemen paket JavaScript yang akan terinstal bersama Node.js.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Langkah 1: Instal Laravel
 
-## Learning Laravel
+1. Pastikan Anda telah menginstal Composer. Jika belum, ikuti [Langkah 1](#langkah-1-instal-composer) dari panduan sebelumnya.
+2. Buka terminal Anda dan jalankan perintah berikut untuk menginstal Laravel dengan versi 10.x:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+   ```bash
+   composer create-project --prefer-dist laravel/laravel nama-proyek-anda "10.*"
+   ```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+3. Masuk ke direktori proyek Anda:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+   ```bash
+   cd nama-proyek-anda
+   ```
 
-## Laravel Sponsors
+## Langkah 2: Konfigurasi Database
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+1. Salin file `.env.example` menjadi `.env`:
 
-### Premium Partners
+   ```bash
+   cp .env.example .env
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+2. Buka file `.env` dengan editor teks Anda dan atur parameter berikut sesuai kebutuhan:
 
-## Contributing
+   ```ini
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=vehicle-order-application
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+   Pastikan untuk mengganti nama database, username, dan password sesuai dengan konfigurasi database Anda.
 
-## Code of Conduct
+## Langkah 3: Migrasi Database
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Jalankan perintah berikut untuk menjalankan migrasi database:
 
-## Security Vulnerabilities
+```bash
+php artisan migrate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Langkah 4: Memasukkan Data Dummy (Opsional)
 
-## License
+Jika Anda ingin memasukkan data dummy ke dalam database, Anda dapat menjalankan perintah berikut:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan db:seed --class=CreateUsersSeeder
+php artisan db:seed --class=SubmissionSeeder
+php artisan db:seed --class=CreateVehicleListSeeder
+```
+
+## Langkah 5: Instalasi Paket JavaScript
+
+Jalankan perintah berikut untuk menginstal paket JavaScript yang diperlukan:
+
+```bash
+npm install
+```
+
+## Langkah 6: Kompilasi Sumber Daya
+
+Selanjutnya, jalankan perintah untuk mengkompilasi sumber daya JavaScript dan CSS:
+
+```bash
+npm run dev
+```
+
+## Langkah 7: Menjalankan Server Pengembangan
+
+Terakhir, jalankan server pengembangan Laravel dengan perintah:
+
+```bash
+php artisan serve
+```
+
+Anda sekarang dapat mengakses aplikasi pemesanan kendaraan di [http://localhost:8000](http://localhost:8000).
+```
