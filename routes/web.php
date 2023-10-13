@@ -42,7 +42,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
 All Approval Routes List
 ----------------------------------------------------------------------------------------*/
 Route::middleware(['auth', 'user-access:approval'])->group(function () {
-    Route::get('approval', [DashboardController::class, 'approvalHome'])->name('approval.home');
+    Route::get('approval', [DashboardController::class, 'index'])->name('approval.home');
     Route::get('approval/history', [HistoryListController::class, 'index']);
 
     Route::resource('approval/submission-list-approval', SubmissionListController::class);
