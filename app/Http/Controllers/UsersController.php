@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use DB;
+use Auth;
 
 use App\Models\User;
+use App\Models\History;
+
 use Illuminate\View\View;
 
 use Illuminate\Http\Request;
@@ -31,6 +34,13 @@ class UsersController extends Controller {
             'updated_at'    => date('Y-m-d H:i:s'),
         ]);
 
+        History::create([
+            'history_log'   => "Melakukan penambahan User",
+            'user_id'       => Auth::user()->id,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ]);
+        
         return redirect()->back();
     }
     
@@ -44,11 +54,26 @@ class UsersController extends Controller {
             'updated_at'    => date('Y-m-d H:i:s'),
         ]);
 
+        History::create([
+            'history_log'   => "Melakukan Perubahan User",
+            'user_id'       => Auth::user()->id,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ]);
+
         return redirect()->back();
     }
 
     public function destroy(Request $request) {
         User::find($request->id)->delete();
+        
+        History::create([
+            'history_log'   => "Melakukan Penghapusan User",
+            'user_id'       => Auth::user()->id,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ]);
+
         return response()->json(array('success' => true));
     }
 }

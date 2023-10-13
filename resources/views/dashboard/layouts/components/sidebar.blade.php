@@ -48,7 +48,11 @@
             @else
             @endif
             <li class="nav-item">
-                <a href={{ url('/history') }} class="nav-link">
+                @if (Auth::user()->role == 'admin')
+                    <a href={{ url('/admin/history') }} class="nav-link">
+                @else
+                    <a href={{ url('/approval/history') }} class="nav-link">
+                @endif
                     <i class="fas fa-history nav-icon"></i>
                     <p>Riwayat Kegiatan</p>
                 </a>

@@ -6,6 +6,7 @@ use DB;
 use Auth;
 
 use App\Models\SubmissionList;
+use App\Models\History;
 use Illuminate\View\View;
 
 use Illuminate\Http\Request;
@@ -51,12 +52,27 @@ class SubmissionListController extends Controller {
             'approve_by'    => Auth::user()->id,
             'updated_at'    => date('Y-m-d H:i:s'),
         ]);
+        
+        History::create([
+            'history_log'   => "Melakukan Perubahan Status pada Submission",
+            'user_id'       => Auth::user()->id,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ]);
 
         return redirect()->back();
     }
 
     public function destroy(Request $request) {
         SubmissionList::find($request->id)->delete();
+        
+        History::create([
+            'history_log'   => "Melakukan Penghapusan pada Submission",
+            'user_id'       => Auth::user()->id,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ]);
+
         return response()->json(array('success' => true));
     }
 }

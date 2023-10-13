@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\SubmissionListController;
+use App\Http\Controllers\HistoryListController;
 
 
 /*
@@ -29,6 +30,8 @@ All Admin Routes List
 ----------------------------------------------------------------------------------------*/
 Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('admin', [DashboardController::class, 'index'])->name('admin.home');
+    Route::get('admin/history', [HistoryListController::class, 'index']);
+
     Route::resource('admin/users', UsersController::class);
     Route::resource('admin/vehicle', VehicleController::class);
     Route::resource('admin/submission-list', SubmissionListController::class);
@@ -40,6 +43,8 @@ All Approval Routes List
 ----------------------------------------------------------------------------------------*/
 Route::middleware(['auth', 'user-access:approval'])->group(function () {
     Route::get('approval', [DashboardController::class, 'approvalHome'])->name('approval.home');
+    Route::get('approval/history', [HistoryListController::class, 'index']);
+
     Route::resource('approval/submission-list-approval', SubmissionListController::class);
 });
 

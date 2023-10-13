@@ -6,6 +6,7 @@ use DB;
 use Auth;
 
 use App\Models\VehicleList;
+use App\Models\History;
 
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -52,6 +53,13 @@ class VehicleController extends Controller {
             'updated_at'    => date('Y-m-d H:i:s'),
         ]);
 
+        History::create([
+            'history_log'   => "Melakukan penambahan Kendaraan",
+            'user_id'       => Auth::user()->id,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ]);
+
         return redirect()->back();
     }
     
@@ -66,12 +74,27 @@ class VehicleController extends Controller {
             'updated_by'    => Auth::user()->id,
             'updated_at'    => date('Y-m-d H:i:s'),
         ]);
+        
+        History::create([
+            'history_log'   => "Melakukan Perubahan Kendaraan",
+            'user_id'       => Auth::user()->id,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ]);
 
         return redirect()->back();
     }
 
     public function destroy(Request $request) {
         VehicleList::find($request->id)->delete();
+        
+        History::create([
+            'history_log'   => "Melakukan Penghapusan Kendaraan",
+            'user_id'       => Auth::user()->id,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ]);
+
         return response()->json(array('success' => true));
     }
 }
