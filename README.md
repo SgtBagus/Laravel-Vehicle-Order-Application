@@ -76,4 +76,20 @@ php artisan serve
 ```
 
 Anda sekarang dapat mengakses aplikasi pemesanan kendaraan di [http://localhost:8000](http://localhost:8000).
+
+# ALUR WEBSITE
+
+## Pengajuan
+pengguna bisa langusng mengajuan di halaman home page
+
+## Persetujuan
+untuk persetujuan bisa di menggunjungi [http://localhost:8000/admin](http://localhost:8000/admin)
+
+Email password
+```bash
+Email : admin@admin.com Password : admin
+Email : approval@approval.com Password : approval
 ```
+
+di keluar email tersebut memiliki role dimana admin bisa melakukan persetujuan, penambahan data user dan kendarran list 
+sedangkan approval hanya berfokus pada persetujuan saja
