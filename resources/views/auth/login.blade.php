@@ -4,7 +4,7 @@
 <div class="login-box">
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">Login - Water Payment</p>
+            <p class="login-box-msg">Login - Vehicle Order</p>
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="input-group mb-3">
